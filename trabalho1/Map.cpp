@@ -6,8 +6,7 @@ Point::Point(int xcoord, int ycoord){
 };
 
 void Point::Print(){
-    cout << "x="<< x <<endl;
-    cout << "y="<< y <<endl;
+    cout << "P("<< x<<","<< y <<")" <<endl;
     cout << endl;
 }
 
@@ -19,4 +18,13 @@ void Map::PrintPoints(){
     for(auto const& i : Points){
         i->Print();
     }
+}
+
+bool Map::Contains(Point* p){
+      for(auto const& i : this->Points){
+        if((i->x==p->x)&&(i->y==p->y)){      
+          return true;
+        }
+      }
+      return false;
 }
