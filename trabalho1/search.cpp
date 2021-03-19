@@ -1,15 +1,13 @@
 #include "search.h"
+#include <random>
+#include <algorithm>
+#include <iterator>
 
-
-void random_Search(Map *m){
-   // random_shuffle(m->Points.begin(),m->Points.end());
-  // shuffle(m->Points.begin(),m->Points.end(),default_random_engine(0));
-    order(m);
+void random_vector(Map *m){
+    random_shuffle(m->Points.begin(), m->Points.end());
+    m->PrintPoints();
 }
 
 void order(Map *m){ 
-    for(auto const& i : m->Points){ 
-        Point *currentPoint = i;
-        currentPoint->Print();
-    }
+    m->PrintPoints();
 }

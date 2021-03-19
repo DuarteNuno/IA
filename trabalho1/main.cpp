@@ -1,5 +1,4 @@
 #include "search.h"
-#include "Map.h"
 
 int main(){
     
@@ -42,10 +41,10 @@ int main(){
             i--;
         }
         else{ 
-            map->Points.push_front(point);
+            map->Points.insert(map->Points.begin(),point);
         }
     }
-    map->PrintPoints();
+    //map->PrintPoints();
     order(map);
-    random_Search(map);
+    random_vector(map);
 }

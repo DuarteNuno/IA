@@ -16,9 +16,9 @@ class Point{
 class Map{
     public:
         int MaxN; // l h
-        list<Point*> Points;
-        list<Point*> ClosedList;//visited Points
-        list<Point*> Path;
+        vector<Point*> Points;
+        vector<Point*> Closedvector;//visited Points
+        vector<Point*> Path;
 
         Map (int m);
         void PrintPoints();
