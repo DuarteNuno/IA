@@ -3,6 +3,8 @@
 Point::Point(int xcoord, int ycoord){
     x = xcoord;
     y = ycoord;
+
+    visited=false;
 };
 
 void Point::Print(){

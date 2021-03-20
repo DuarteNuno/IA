@@ -5,6 +5,8 @@ class Point{
         int x;
         int y;
 
+        bool visited;
+
         Point *prev;
         Point *next;
 
@@ -17,7 +19,8 @@ class Map{
     public:
         int MaxN; // l h
         vector<Point*> Points;
-        vector<Point*> Closedvector;//visited Points
+        vector<Point*> Openlist;
+        vector<Point*> Closedlist;//visited Points
         vector<Point*> Path;
 
         Map (int m);

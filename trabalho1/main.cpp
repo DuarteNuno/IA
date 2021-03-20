@@ -46,5 +46,13 @@ int main(){
     }
     //map->PrintPoints();
     order(map);
-    random_vector(map);
+
+    cout<<endl;
+    cout<<endl;
+    cout<<"---------------------------------"<<endl;
+    cout<<endl;
+    cout<<endl;
+    //permutation(map);
+    nearest_Neighbour(map);
+    print_Path(map);
 }
