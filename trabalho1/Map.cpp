@@ -30,3 +30,9 @@ bool Map::Contains(Point* p){
       }
       return false;
 }
+
+Vector::Vector(Point s, Point f){
+    start=s;
+    finish=f;
+    size=sqrt(((f.x-s.x)*(f.x-s.x))+((f.y-s.y)*(f.y-s.y)));
+}

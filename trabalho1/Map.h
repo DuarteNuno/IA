@@ -27,3 +27,13 @@ class Map{
         void PrintPoints();
         bool Contains( Point* p);
 };
+
+
+class Vector{
+    public:
+        Point start;
+        Point finish;
+        int size;
+
+        Vector (Point s, Point f);
+}
