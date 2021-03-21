@@ -91,3 +91,12 @@ void nearest_Neighbour(Map *m){
     }
 }
 
+
+double crossProduct(int x1, int y1, int x2, int y2){
+    return (x1*y2)-(x2*y1);    
+}
+
+bool clockwise(Point* a, Point* b){
+    if(crossProduct(a->x,a->y,b->x,b->y)>0) return true;
+    else return false;
+}
