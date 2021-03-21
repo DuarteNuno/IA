@@ -1,7 +1,8 @@
 #include "search.h"
 
+
 int main(){
-    
+  
     cout << "Tamanho do mapa:"<<endl;
     int mapsize;
     cin >>mapsize;
@@ -13,6 +14,7 @@ int main(){
     
     for(int i=0; i<number_points; ++i){
 
+        
         int r1=rand()%(mapsize+1);//numero 0 -m
         int r2=rand()%(mapsize+1);
 
@@ -41,9 +43,21 @@ int main(){
             i--;
         }
         else{ 
-            map->Points.insert(map->Points.begin(),point);
+          map->Points.insert(map->Points.begin(),point);
         }
     }
+
+
+    for(auto const& i :map->Points){
+         for(auto const& j :map->Points){   
+             if(i!=j){ 
+                Vec* v = new Vec(i,j);
+                map->Links.push_back(v);
+                v->Vec_Print();
+            }
+        }
+    }
+
     //map->PrintPoints();
     order(map);
 
@@ -55,4 +69,17 @@ int main(){
     //permutation(map);
     nearest_Neighbour(map);
     print_Path(map);
+
+   /* cout << "Primeiro  ponto "<<endl;
+    int x1,y1,x2,y2;
+    cin >>x1;
+    cin >>y1;
+    cin >>x2;
+    cin >>y2;
+
+    Point* p1 = new Point(x1,y1);
+    Point* p2 = new Point(x2,y2);
+
+   Vec v = Vec(p1,p2);
+   cout << v.size << endl;*/
 }
