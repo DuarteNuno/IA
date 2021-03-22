@@ -2,16 +2,16 @@
 
 void random_vector(Map *m){
     random_shuffle(m->Points.begin(), m->Points.end());
-    m->PrintPoints();
+    m->Print_Points();
 }
 
 void order(Map *m){ 
-    m->PrintPoints();
+    m->Print_Points();
 }
 
 void print_Path(Map *m){ 
     for(auto const& i : m->Path){
-        i->Print();
+        i->Point_Print();
     }
 }
 
@@ -82,6 +82,8 @@ void nearest_Neighbour(Map *m){
         if(!next_Point->visited){
             m->Openlist.push_back(next_Point);
             m->Path.push_back(next_Point);
+            Vec* v = new Vec(current_Point,next_Point);
+            m->Links.push_back(v);
         }
 
         else{
@@ -91,12 +93,78 @@ void nearest_Neighbour(Map *m){
     }
 }
 
-
-double crossProduct(int x1, int y1, int x2, int y2){
-    return (x1*y2)-(x2*y1);    
+double cross_Product(Vec* v1, Vec* v2){
+    return (v1->x*v2->y)-(v2->x*v1->y);    
 }
 
-bool clockwise(Point* a, Point* b){
-    if(crossProduct(a->x,a->y,b->x,b->y)>0) return true;
-    else return false;
+bool on_segment(Point* p1, Point* p2, Point* p3){
+    if( (min(p1->x,p2->x) <= p3->x <= max(p1->x,p2->x)) && 
+        (min(p1->y,p2->y) <= p3->y <= max(p1->y,p2->y)  ))
+        return true;
+    
+    return false;
+}
+
+bool vectors_Intersect(Vec* v1, Vec* v2){
+    Vec *tmp1 = new Vec(v1->start,v2->start);
+                            //reta P1i->P1f & P1i->P2i
+    double d1 = cross_Product(v1,tmp1);
+                        
+    Vec *tmp2 = new Vec(v1->start,v2->finish);
+                            //reta P1i->P1f & P1i->P2f
+    double d2 = cross_Product(v1,tmp2);
+    
+    Vec *tmp3 = new Vec(v2->start,v1->start);
+                            //reta P2i->P2f & P2i->P1i
+    double d3 = cross_Product(v2,tmp3);
+
+    Vec *tmp4 = new Vec(v2->start,v1->finish);
+                            //reta P2i->P2f & P2i->P1f
+    double d4 = cross_Product(v2,tmp4);
+    
+    if(((d1>0 && d2<0) || (d1<0 && d2>0)) &&
+      ((d3>0 && d4<0) || (d3<0 && d4>0)))
+      return true;
+
+    else if((d1==0) && 
+           (on_segment(v1->start,v1->finish,v2->start)))
+           return true;
+    else if((d2==0) && 
+           (on_segment(v1->start,v1->finish,v2->finish)))
+           return true;
+    else if((d3==0) && 
+           (on_segment(v2->start,v2->finish,v1->start)))
+           return true;
+    else if((d4==0) && 
+           (on_segment(v2->start,v2->finish,v1->finish)))
+           return true;
+
+    return false;
+}
+
+void two_exchange(Map *m){
+    
+    nearest_Neighbour(m);
+    
+    for(int i =0; i<m->Links.size();++i){//vec i
+        for(int j =0; j<m->Links.size();++j){//vec j
+            if((i!=j) || (m->Links[i]->start != m->Links[j]->finish) 
+                      || (m->Links[i]->finish !=m-> Links[j]->start) 
+                      || (m->Links[j]->visited)){
+                if(vectors_Intersect(m->Links[i],m->Links[j])){
+                    //new vec v1(i->start,j->start)
+                    Vec *v1 = new Vec(m->Links[i]->start,m->Links[j]->start);
+                    //new vec v2(i->finish,j->finish)
+                    Vec *v2 = new Vec(m->Links[i]->finish,m->Links[j]->finish);
+                    
+                    m->Links.erase(m->Links.begin()+i);
+                    m->Links.erase(m->Links.begin()+j);
+
+                    //pusback v1,v2
+                    m->Links.push_back(v1);
+                    m->Links.push_back(v2);
+                }
+            }
+        }
+    }
 }

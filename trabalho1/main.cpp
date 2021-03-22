@@ -47,8 +47,7 @@ int main(){
         }
     }
 
-
-    for(auto const& i :map->Points){
+   /*  for(auto const& i :map->Points){
          for(auto const& j :map->Points){   
              if(i!=j){ 
                 Vec* v = new Vec(i,j);
@@ -56,7 +55,7 @@ int main(){
                 v->Vec_Print();
             }
         }
-    }
+    } */
 
     //map->PrintPoints();
     order(map);
@@ -67,7 +66,8 @@ int main(){
     cout<<endl;
     cout<<endl;
     //permutation(map);
-    nearest_Neighbour(map);
+    //nearest_Neighbour(map);
+    two_exchange(map);
     print_Path(map);
 
    /* cout << "Primeiro  ponto "<<endl;
@@ -82,4 +82,5 @@ int main(){
 
    Vec v = Vec(p1,p2);
    cout << v.size << endl;*/
+
 }

@@ -7,7 +7,7 @@ Point::Point(int xcoord, int ycoord){
     visited=false;
 };
 
-void Point::Print(){
+void Point::Point_Print(){
     cout << "P("<< x<<","<< y <<")" <<endl;
     cout << endl;
 }
@@ -16,9 +16,15 @@ Map::Map (int m) {
     MaxN = m;
 };
 
-void Map::PrintPoints(){
+void Map::Print_Points(){
     for(auto const& i : Points){
-        i->Print();
+        i->Point_Print();
+    }
+}
+
+void Map::Print_Vecs(){
+    for(auto const& i : Links){
+        i->Vec_Print();
     }
 }
 
@@ -36,6 +42,8 @@ Vec::Vec(Point* s, Point* f){
     finish=f;
     size=sqrt(((f->x-s->x)*(f->x-s->x))+((f->y-s->y)*(f->y-s->y)));
     intercepted=false;
+    x=(f->x)-(s->x);
+    y=(f->y)-(s->y);
 };
 
 void Vec::Vec_Print(){
