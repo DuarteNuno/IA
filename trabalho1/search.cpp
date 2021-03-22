@@ -145,7 +145,8 @@ bool vectors_Intersect(Vec* v1, Vec* v2){
 void two_exchange(Map *m){
     
     nearest_Neighbour(m);
-    
+    print_Path(m);
+    cout<<"2x"<<endl;
     for(int i =0; i<m->Links.size();++i){//vec i
         for(int j =0; j<m->Links.size();++j){//vec j
             if((i!=j) || (m->Links[i]->start != m->Links[j]->finish) 
@@ -157,14 +158,15 @@ void two_exchange(Map *m){
                     //new vec v2(i->finish,j->finish)
                     Vec *v2 = new Vec(m->Links[i]->finish,m->Links[j]->finish);
                     
-                    m->Links.erase(m->Links.begin()+i);
-                    m->Links.erase(m->Links.begin()+j);
-
-                    //pusback v1,v2
                     m->Links.push_back(v1);
                     m->Links.push_back(v2);
+                    m->Links.erase(m->Links.begin()+i);
+                    m->Links.erase(m->Links.begin()+j);
+                    
+                   cout<< "int"<<endl;
                 }
             }
         }
     }
+    print_Path(m);
 }

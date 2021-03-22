@@ -15,16 +15,16 @@ int main(){
     for(int i=0; i<number_points; ++i){
 
         
-        int r1=rand()%(mapsize+1);//numero 0 -m
-        int r2=rand()%(mapsize+1);
+        //int r1=rand()%(mapsize+1);//numero 0 -m
+        //int r2=rand()%(mapsize+1);
 
         
         
-        int xsign = rand()%2;//sinal
-		int ysign = rand()%2;
+        //int xsign = rand()%2;//sinal
+		//int ysign = rand()%2;
 		
-		if(xsign) r1*= -1;//atribuir sinal
-		if(ysign) r2*= -1;
+		//if(xsign) r1*= -1;//atribuir sinal
+		//if(ysign) r2*= -1;
 
         //cout<<r1 << "-" << r2<<endl;
 
@@ -32,7 +32,14 @@ int main(){
        // cout<<"create point"<<endl;
        // cout<<endl;
 
-        Point *point = new Point(r1,r2);
+        int x1,y1,x2,y2;
+        cin >>x1;
+        cin >>y1;
+
+
+        Point* point = new Point(x1,y1);
+        
+        //Point *point = new Point(r1,r2);
 
         //cout<<r1 << "-" << r2<<endl;
 
@@ -68,9 +75,10 @@ int main(){
     //permutation(map);
     //nearest_Neighbour(map);
     two_exchange(map);
+    map->Print_Vecs();
     print_Path(map);
 
-   /* cout << "Primeiro  ponto "<<endl;
+    cout << "Primeiro  ponto "<<endl;
     int x1,y1,x2,y2;
     cin >>x1;
     cin >>y1;
@@ -81,6 +89,6 @@ int main(){
     Point* p2 = new Point(x2,y2);
 
    Vec v = Vec(p1,p2);
-   cout << v.size << endl;*/
+   cout << v.size << endl;
 
 }
