@@ -16,6 +16,11 @@ Map::Map (int m) {
     MaxN = m;
 };
 
+Line::Line (Vec* a, Vec* b){
+    v1=a;
+    v2=b;
+};
+
 void Map::Print_Points(){
     for(auto const& i : Points){
         i->Point_Print();

@@ -62,6 +62,9 @@ void nearest_Neighbour(Map *m){
             m->Path.push_back(next_Point);
             Vec* v = new Vec(current_Point,next_Point);
             m->Links.push_back(v);
+            Vec* t = new Vec(next_Point,current_Point);
+            Line* l = new Line(v,t);
+            m->Lines.push_back(l);
         }
 
         else{
@@ -91,101 +94,231 @@ bool on_segment(Point* p1, Point* p2, Point* p3){ //check if p3 is on p1p2 line
         else return false;
 }
 
-bool vectors_Intersect(Vec* v1, Vec* v2){
-
-    Vec *tmp1 = new Vec(v1->start,v2->start);
-                            //reta P1i->P1f & P1i->P2i
-    double d1 = cross_Product(v1,tmp1);
-                        
-    Vec *tmp2 = new Vec(v1->start,v2->finish);
-                            //reta P1i->P1f & P1i->P2f
-    double d2 = cross_Product(v1,tmp2);
-    
-    Vec *tmp3 = new Vec(v2->start,v1->start);
-                            //reta P2i->P2f & P2i->P1i
-    double d3 = cross_Product(v2,tmp3);
-
-    Vec *tmp4 = new Vec(v2->start,v1->finish);
-                            //reta P2i->P2f & P2i->P1f
-    double d4 = cross_Product(v2,tmp4);
-    
-    if(((d1>0 && d2<0) || (d1<0 && d2>0)) &&
-      ((d3>0 && d4<0) || (d3<0 && d4>0)))
-      return true;
-
-    else if((d1==0) && 
-           (on_segment(v1->start,v1->finish,v2->start)))
-           return true;
-    else if((d2==0) && 
-           (on_segment(v1->start,v1->finish,v2->finish)))
-           return true;
-    else if((d3==0) && 
-           (on_segment(v2->start,v2->finish,v1->start)))
-           return true;
-    else if((d4==0) && 
-           (on_segment(v2->start,v2->finish,v1->finish)))
-           return true;
-
-    return false;
-}
-
-
 bool legal_intersect(Vec* v1,Vec* v2){
     if((v1->start  != v2->finish) 
-    && (v1->finish != v2->start)) return true;
+    && (v1->finish != v2->start)) return true;/*
+    && (v1->start  != v2->start)
+    && (v1->finish != v1->finish)) return true;*/
     else return false;
+}
+
+bool vectors_Intersect(Vec* v1, Vec* v2){
+    if(legal_intersect(v1,v2)){
+
+        Vec *tmp1 = new Vec(v1->start,v2->start);
+                                //reta P1i->P1f & P1i->P2i
+        double d1 = cross_Product(v1,tmp1);
+                            
+        Vec *tmp2 = new Vec(v1->start,v2->finish);
+                                //reta P1i->P1f & P1i->P2f
+        double d2 = cross_Product(v1,tmp2);
+        
+        Vec *tmp3 = new Vec(v2->start,v1->start);
+                                //reta P2i->P2f & P2i->P1i
+        double d3 = cross_Product(v2,tmp3);
+
+        Vec *tmp4 = new Vec(v2->start,v1->finish);
+                                //reta P2i->P2f & P2i->P1f
+        double d4 = cross_Product(v2,tmp4);
+        
+        if(((d1>0 && d2<0) || (d1<0 && d2>0)) &&
+        ((d3>0 && d4<0) || (d3<0 && d4>0)))
+        return true;
+
+        else if((d1==0) && 
+            (on_segment(v1->start,v1->finish,v2->start)))
+            return true;
+        else if((d2==0) && 
+            (on_segment(v1->start,v1->finish,v2->finish)))
+            return true;
+        else if((d3==0) && 
+            (on_segment(v2->start,v2->finish,v1->start)))
+            return true;
+        else if((d4==0) && 
+            (on_segment(v2->start,v2->finish,v1->finish)))
+            return true;
+
+        return false;
+    }
+    return false;
 }
 
 void two_exchange(Map *m){
     
     nearest_Neighbour(m);
-   // print_Path(m);
-   //cout<<"2x"<<endl;
+    print_Path(m);
+    cout<<"_------------------------------------------_"<<endl;
    // cout << "size:" << m->Links.size()<< endl;
    // for(int i =0; i<m->Links.size();++i) m->Links[i]->Vec_Print();
     
-      for(int i =0; i<m->Links.size();++i){//vec i
-        for(int j =0; j<m->Links.size();++j){//vec j
-            if(m->Links[i]->start==m->Links[j]->start){
-                 Vec *vtemp= new Vec(m->Links[j]->finish,m->Links[j]->start);
-                 m->Links.erase(m->Links.begin()+j);
-                 m->Links.push_back(vtemp);
-            } 
+    for(int i =0; i<m->Lines.size();++i){//vec i
+        for(int j =0; j<m->Lines.size();++j){//vec j
+            if(i==j){
+                continue;
+            }
+            //m->Lines[i]->v1->Vec_Print();
+            //m->Lines[j]->v1->Vec_Print();
+            if(legal_intersect(m->Lines[i]->v1,m->Lines[j]->v1)){
+                if(vectors_Intersect(m->Lines[i]->v1,m->Lines[j]->v2)){
 
-            else   if(m->Links[i]->finish==m->Links[j]->finish){
-                 Vec *vtemp= new Vec(m->Links[j]->finish,m->Links[j]->start);
-                 m->Links.erase(m->Links.begin()+j);
-                 m->Links.push_back(vtemp);
-            } 
-
-         
-            else
-                if(legal_intersect(m->Links[i],m->Links[j])){
-                if(vectors_Intersect(m->Links[i],m->Links[j])){
-                   cout << "detetei treta" << endl;
+                    cout << "detetei treta" << endl;
                     m->Links[i]->Vec_Print();
                     m->Links[j]->Vec_Print();
 
                     cout << "sou burro" << endl;
                     //new vec v1(i->start,j->start)
-                    Vec *v1 = new Vec(m->Links[i]->start,m->Links[j]->start);
+                    Vec *v1 = new Vec(m->Lines[i]->v1->start,m->Lines[j]->v1->start);
                     //new vec v2(i->finish,j->finish)
-                    Vec *v2 = new Vec(m->Links[i]->finish,m->Links[j]->finish);
-                     
-                     v1->Vec_Print();
-                     v2->Vec_Print();
+                    Vec *v2 = new Vec(m->Lines[j]->v1->start,m->Lines[i]->v1->start);
 
-                    m->Links.push_back(v1);
-                    m->Links.push_back(v2);
-                    m->Links.erase(m->Links.begin()+i);
-                    m->Links.erase(m->Links.begin()+j);
+                    Vec *v3 = new Vec(m->Lines[i]->v1->finish,m->Lines[j]->v1->finish);
+                    //new vec v2(i->finish,j->finish)
+                    Vec *v4 = new Vec(m->Lines[j]->v1->finish,m->Lines[i]->v1->finish);
                     
-                   //cout<< "int"<<endl;
+                    Line *l1 = new Line(v1,v2);
+                    Line *l2 = new Line(v3,v4);
+
+                    
+                    v1->Vec_Print();
+                    v2->Vec_Print();
+                    v3->Vec_Print();
+                    v4->Vec_Print();
+
+                    if(i<j){
+                        m->Lines.erase(m->Lines.begin()+i);
+                        m->Lines.erase(m->Lines.begin()+j-1);
+                    }
+                    else{
+                        m->Lines.erase(m->Lines.begin()+i);
+                        m->Lines.erase(m->Lines.begin()+j);
+                    }
+ 
+
+                    m->Lines.push_back(l1);
+                    m->Lines.push_back(l2);
+                    
                 }
             }
         }
     } 
 
-   for(int i =0; i<m->Links.size();++i) m->Links[i]->Vec_Print();
-   
+    for(auto const& i : m->Lines){
+        if(i->v1->start->l1_visited)
+            i->v1->start->l2=i;
+        else
+            i->v1->start->l1=i;
+        
+        if(i->v1->finish->l1_visited)
+            i->v1->finish->l2=i;
+        else
+            i->v1->finish->l1=i;
+    }
+    cout<<"1"<<endl;
+    while (!m->Openlist.empty()){
+     m->Openlist.pop_back();
+    }
+    cout<<"2"<<endl;
+    while (!m->Path.empty()){
+     m->Path.pop_back();
+    }
+    cout<<"3"<<endl;
+    for(auto const& i : m->Points){
+        i->visited = false;
+    }
+    cout<<"4"<<endl;
+    int r =rand()%(m->Points.size()-1);
+    
+    Point *inicial_Point = m->Points[r];
+
+    m->Openlist.push_back(inicial_Point);
+    m->Path.push_back(inicial_Point);
+
+    cout<<"5"<<endl;
+
+    bool goalFound=false;
+    Point *prev_Point=m->Openlist[0];
+    Point *current_Point=m->Openlist[0];
+
+    while(!goalFound){
+        prev_Point=current_Point;
+        current_Point = m->Openlist[0];
+        //current_Point->Print();
+        m->Openlist.erase(m->Openlist.begin());
+        
+        current_Point->visited=true;
+
+        Point *next_Point;
+        cout<<"6"<<endl;
+        
+        if(current_Point->l1->v1->finish !=current_Point 
+        || current_Point->l1->v1->finish !=prev_Point){
+            next_Point=current_Point->l1->v1->finish;
+        }
+        else if(current_Point->l1->v2->finish !=current_Point 
+        || current_Point->l1->v2->finish !=prev_Point){
+            next_Point=current_Point->l1->v2->finish;
+        }
+        else if(current_Point->l2->v1->finish !=current_Point 
+        || current_Point->l2->v1->finish !=prev_Point){
+            next_Point=current_Point->l2->v1->finish;
+        }
+        else if(current_Point->l2->v2->finish !=current_Point 
+        || current_Point->l2->v2->finish !=prev_Point){
+            next_Point=current_Point->l2->v2->finish;
+        }     
+        cout<<"7"<<endl;
+
+        
+        if(next_Point->visited){
+            goalFound=true;
+            continue;
+        }
+        m->Path.push_back(next_Point);
+        m->Openlist.push_back(next_Point);
+    }
+    cout<<"8"<<endl;
+
+    m->Path.push_back(inicial_Point);
+    cout<<"oi"<<endl;
+    for(auto const& i : m->Lines){
+        cout<<"v1:\n";
+        i->v1->Vec_Print();
+        cout<<"v2:\n";
+        i->v2->Vec_Print();
+    }
+    cout<<"9"<<endl;
+
 }
+bool check_visited( vector<Point*> Points){
+    for(auto const& i : Points){
+        if(!i->visited){
+            return false;
+        }
+    }
+    return true;
+}
+/*
+void two_exchange(Map *m){
+    nearest_Neighbour(m);
+    //links->caminho mais perto direcionado
+
+    m->Print_Vecs();
+
+    for(auto const& i : m->Points){
+        i->visited = false;
+    }
+    /*
+    abc -> links
+    cba -> nlinks
+    */
+    /*vector<Vec*> counter_Links;
+    for(auto const& i : m->Links){
+        Vec *v1 = new Vec(i->finish,i->start);
+        counter_Links.insert(counter_Links.begin(),v1);
+    }
+*//*
+    //while houver Points por visitar && intersecoes 
+    bool goalFound=false;
+
+}
+*/

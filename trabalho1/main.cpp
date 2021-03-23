@@ -110,7 +110,11 @@ int main(){
 
     //cout << cross_Product(v1,v2) << endl;
     //cout << on_segment(p1,p2,p3);
+    cout<<"ola"<<endl;
     two_exchange(map); 
+    print_Path(map);
+    cout<<"xau"<<endl;
+
 
 
 }

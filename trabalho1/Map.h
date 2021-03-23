@@ -1,5 +1,5 @@
 #include "libraries.h"
-
+class Line;
 class Point{
     public:
         int x;
@@ -9,6 +9,11 @@ class Point{
 
         Point *prev;
         Point *next;
+
+        Line *l1;
+        Line *l2;
+
+        bool l1_visited;
 
         Point(int xcoord, int ycoord);
         void Point_Print();
@@ -30,6 +35,16 @@ class Vec{
         void Vec_Print();
 };
 
+class Line{
+    public:
+        Vec* v1;
+        Vec* v2;
+        
+        bool visited;
+
+        Line(Vec* a, Vec* b);
+};
+
 class Map{
     public:
         int MaxN; // l h
@@ -38,6 +53,9 @@ class Map{
         vector<Point*> Closedlist;//visited Points
         vector<Point*> Path;
         vector<Vec*> Links;
+        vector<Line*> Lines;
+
+        //Point inicial
 
         Map (int m);
         void Print_Points();
