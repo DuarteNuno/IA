@@ -131,9 +131,7 @@ bool vectors_Intersect(Vec* v1, Vec* v2){
 
 
 bool legal_intersect(Vec* v1,Vec* v2){
-    if((v1->start  != v2->finish)
-    && (v1->finish != v2->finish)
-    && (v1->start  != v2->start)
+    if((v1->start  != v2->finish) 
     && (v1->finish != v2->start)) return true;
     else return false;
 }
@@ -148,7 +146,21 @@ void two_exchange(Map *m){
     
       for(int i =0; i<m->Links.size();++i){//vec i
         for(int j =0; j<m->Links.size();++j){//vec j
-            if(legal_intersect(m->Links[i],m->Links[j])){
+            if(m->Links[i]->start==m->Links[j]->start){
+                 Vec *vtemp= new Vec(m->Links[j]->finish,m->Links[j]->start);
+                 m->Links.erase(m->Links.begin()+j);
+                 m->Links.push_back(vtemp);
+            } 
+
+            else   if(m->Links[i]->finish==m->Links[j]->finish){
+                 Vec *vtemp= new Vec(m->Links[j]->finish,m->Links[j]->start);
+                 m->Links.erase(m->Links.begin()+j);
+                 m->Links.push_back(vtemp);
+            } 
+
+         
+            else
+                if(legal_intersect(m->Links[i],m->Links[j])){
                 if(vectors_Intersect(m->Links[i],m->Links[j])){
                    cout << "detetei treta" << endl;
                     m->Links[i]->Vec_Print();
