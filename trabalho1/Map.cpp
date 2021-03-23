@@ -47,9 +47,10 @@ Vec::Vec(Point* s, Point* f){
 };
 
 void Vec::Vec_Print(){
-    cout<<size<<endl;
-    cout<<"x:"<<x<<endl;
-    cout<<"y:"<<y<<endl;
+    //cout<<size<<endl;
+    //cout<<"x:"<<x<<endl;
+    //cout<<"y:"<<y<<endl;
     start->Point_Print();
+    cout << "->";
     finish->Point_Print();
 }
