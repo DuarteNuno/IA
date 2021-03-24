@@ -2,11 +2,12 @@
 
 void random_vector(Map *m){
     //Point* first = m->Points.begin();
-    vector<Point*> r = random_shuffle(m->Points.begin(), m->Points.end());
-    //m->Print_Points();
-    m->Path = r;
-    m->Path.push_back(m->Path.begin());
     
+    random_shuffle(m->Points.begin(), m->Points.end());
+    vector<Point*> r = m->Points;
+    //m->Print_Points();
+    r.push_back(r.front());
+    m->Path = r;
 }
 
 void order(Map *m){ 
@@ -113,8 +114,7 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
                             //reta P1i->P1f & P1i->P2i
 
                             //p1f-p1i // p2i-p1i
-    double d1 = 
-    cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
+    double d1 = cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
                   (p2i->x-p1i->x),(p2i->y-p1i->y));
 
                             //reta P1i->P1f & P1i->P2f
@@ -149,7 +149,7 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
     return false;
 }
 
-vector<vector<Point*>>* two_exchange(vector<Point*>* p){
+vector<vector<Point*>>* two_exchange(vector<Point*> p){
     vector<vector<Point*>> *Solution;
 
     for(int i = 1; i<p.size()-2; i++){
@@ -178,7 +178,7 @@ vector<vector<Point*>>* two_exchange(vector<Point*>* p){
                     //reverse entre i--j-1
                     //j->size-1 cp
                     
-                    vector<Point*> *tmp=p;
+                    vector<Point*> tmp=p;
 
                     reverse(tmp.begin()+i,tmp.begin()+j);
                     Point *t = tmp[i];
@@ -194,36 +194,49 @@ vector<vector<Point*>>* two_exchange(vector<Point*>* p){
 }
 
 vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
-    vector<Point*>* n;
+    vector<Point*> n;
+    
+    double min_per = DBL_MAX;
+    
     switch(opt) {
-        case 'a':
-            // reduzir perimetro
-            //double min_p = max doudle
-            // ciclo percorrer candidatos
-                //double p=0;
-                //ciclo para percorrer points
-                   //size(i-1 ->i)->sqrt()
-                   //p+=size
-                   //i-1 -> i
-                //if p < min_p
-                    //min_p = p
+        
+        case 'a': //menor perimetro
+            
+            for(int i=0;i<candidates->size();i++){
+                for(auto const& j : candidates[i]){
+                    
+                    double perimeter=0;
+                    for(int k=0;k<j.size();k++){
+                     
+                        double x1 = j[k]->x-1;
+                        double x2 = j[k]->x;
+                        double y1 = j[k]->y-1;
+                        double y2 = j[k]->y;
 
+                        double line_size=sqrt(pow(x2-x1,2.0)+pow(y2-y1,2.0));
+                        perimeter+=line_size;
+                    }
+
+                    if(perimeter<=min_per){
+                        min_per=perimeter;
+                        n=j;
+                    }
+                }
+            }
             break;
-        case 'b':
-            // primeiro candidato
-            n=candidates[0];
+        
+        case 'b': // primeiro candidato
+            n=candidates.front();
             break;
+        
         case 'c':
             // menos conflitos
-
-
-
+            n=candidates.front();
             break;
 
         default:// random
-            int r =rand()%(candidates->size()-1);
-            n = candidates[r];
-            break;
+           // int r =rand()%(candidates->size()-1);
+            n=candidates.front();
     }
     return n;
 }
@@ -234,7 +247,8 @@ vector<Point*> hill_climbing(char opt, vector<vector<Point*>>* candidates){
     vector<Point*> neighbour = choose_opt(opt,candidates);
     //if(neighbour pior atual return atual)
     //a=two_exchange(neighbour)
-    hill_climbing(opt,a);
+   // hill_climbing();
+   return neighbour;
     
 }
 /* 
