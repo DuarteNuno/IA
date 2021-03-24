@@ -1,5 +1,8 @@
 #include "search.h"
-
+/*
+ *props às ninas @patricia4vieira e @CatarinaSemInsta
+ *
+*/
 
 int main(){
   
@@ -111,8 +114,16 @@ int main(){
     //cout << cross_Product(v1,v2) << endl;
     //cout << on_segment(p1,p2,p3);
     cout<<"ola"<<endl;
-    two_exchange(map); 
-    print_Path(map);
+    nearest_Neighbour(map);
+    vector<vector<Point*>>* two_x = two_exchange(map->Path);
+    /*for(int i = 0; i<two_x->size();i++){
+      vector<Point*> *t = two_x[i];
+      for(int j = 0; j<t->size();j++){
+        t[j]->Point_Print();
+      }
+    }*/
+
+    //print_Path(map);
     cout<<"xau"<<endl;
 
 

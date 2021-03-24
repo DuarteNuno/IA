@@ -62,5 +62,11 @@ class Map{
         void Print_Vecs();
         bool Contains( Point* p);
 };
+/*
+class Candidates{
+    public:
+        vector<vector<Point*>> List_Candidate;
+};
+*/
 
 
