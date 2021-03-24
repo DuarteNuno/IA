@@ -1,8 +1,12 @@
 #include "search.h"
 
 void random_vector(Map *m){
-    random_shuffle(m->Points.begin(), m->Points.end());
-    m->Print_Points();
+    //Point* first = m->Points.begin();
+    vector<Point*> r = random_shuffle(m->Points.begin(), m->Points.end());
+    //m->Print_Points();
+    m->Path = r;
+    m->Path.push_back(m->Path.begin());
+    
 }
 
 void order(Map *m){ 
@@ -156,6 +160,7 @@ vector<vector<Point*>>* two_exchange(vector<Point*>* p){
 
                 //considerar interesefa entre i <-> i-1 e j <-> j-1 
                 if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {
+                    //------
                     //criar new vector<point>
                     //altera duas 
                     // pushback new
@@ -189,29 +194,47 @@ vector<vector<Point*>>* two_exchange(vector<Point*>* p){
 }
 
 vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
+    vector<Point*>* n;
     switch(opt) {
         case 'a':
             // reduzir perimetro
+            //double min_p = max doudle
+            // ciclo percorrer candidatos
+                //double p=0;
+                //ciclo para percorrer points
+                   //size(i-1 ->i)->sqrt()
+                   //p+=size
+                   //i-1 -> i
+                //if p < min_p
+                    //min_p = p
 
             break;
         case 'b':
             // primeiro candidato
+            n=candidates[0];
             break;
         case 'c':
             // menos conflitos
-            break;
-        default:
-            // random
-    }
 
+
+
+            break;
+
+        default:// random
+            int r =rand()%(candidates->size()-1);
+            n = candidates[r];
+            break;
+    }
+    return n;
 }
 
 
-bool hill_climbing(char opt, vector<vector<Point*>>* candidates){
+vector<Point*> hill_climbing(char opt, vector<vector<Point*>>* candidates){
     
     vector<Point*> neighbour = choose_opt(opt,candidates);
-    //if(neighbour pior atual close)
-    hill_climbing(opt,neighbour);
+    //if(neighbour pior atual return atual)
+    //a=two_exchange(neighbour)
+    hill_climbing(opt,a);
     
 }
 /* 

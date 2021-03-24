@@ -116,8 +116,9 @@ int main(){
     //cout << cross_Product(v1,v2) << endl;
     //cout << on_segment(p1,p2,p3);
     cout<<"ola"<<endl;
-    nearest_Neighbour(map);
-    
+    //a =nearest_Neighbour(map);
+    //b=2x(a)
+    //hill(opc,b)
     vector<vector<Point*>>* two_x = two_exchange(map->Path);
     cout<<"g"<<endl;
     for(int i = 0; i<two_x->size();i++){
