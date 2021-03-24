@@ -14,6 +14,6 @@ bool on_segment(Point* p1,Point* p2,Point* p3);
 
 bool legal_intersect(Point* p1, Point* p2, Point* p3, Point* p4);
 
-bool vectors_Intersect(Vec* v1, Vec* v2);
+bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f);
 
 vector<vector<Point*>>* two_exchange(vector<Point*> p);

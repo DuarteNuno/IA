@@ -150,17 +150,14 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
 }
 
 vector<vector<Point*>>* two_exchange(vector<Point*> p){
-    vector<vector<Point*>> *Solution;
-
+    vector<vector<Point*>>* Solution = new vector<vector<Point*>>;
     for(int i = 1; i<p.size()-2; i++){
-        //cout<<"i:"<<i<<endl;
         for(int j = i+1; j<p.size()-1; j++){
-            //cout<<"j:"<<j<<endl;
             if(p[i-1]!=p[j+1]){
-
                 //considerar interesefa entre i <-> i-1 e j <-> j-1 
                 if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {
                     //------
+                    //intersetou
                     //criar new vector<point>
                     //altera duas 
                     // pushback new
@@ -177,7 +174,7 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p){
                     //i swap j-1
                     //reverse entre i--j-1
                     //j->size-1 cp
-                    
+               
                     vector<Point*> tmp=p;
 
                     reverse(tmp.begin()+i,tmp.begin()+j);
@@ -193,34 +190,46 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p){
     return Solution;
 }
 
-vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
+int n_Intersections(vector<Point*> p){
+    int s=0;
+    for(int i = 1; i<p.size()-2; i++){
+        for(int j = i+1; j<p.size()-1; j++){
+            if(p[i-1]!=p[j+1]){
+                //considerar interesefa entre i <-> i-1 e j <-> j-1 
+                if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {
+                    s++;
+                }  
+            }
+        }
+    }
+    return s;
+}
+
+vector<Point*> choose_opt(char opt, vector<vector<Point*>> candidates){
     vector<Point*> n;
     
     double min_per = DBL_MAX;
+    int min_intr = 2147483647;
     
     switch(opt) {
         
-        case 'a': //menor perimetro
-            
-            for(int i=0;i<candidates->size();i++){
-                for(auto const& j : candidates[i]){
+        case 'a': //menor perimetro   
+            for(int i=0;i<candidates.size();i++){//iteracao de                    
+                double perimeter=0;
+                for(int k=0;k<candidates[i].size();k++){
                     
-                    double perimeter=0;
-                    for(int k=0;k<j.size();k++){
-                     
-                        double x1 = j[k]->x-1;
-                        double x2 = j[k]->x;
-                        double y1 = j[k]->y-1;
-                        double y2 = j[k]->y;
+                    double x1 = candidates[i][k-1]->x;
+                    double x2 = candidates[i][k]->x;
+                    double y1 = candidates[i][k-1]->y;
+                    double y2 = candidates[i][k]->y;
 
-                        double line_size=sqrt(pow(x2-x1,2.0)+pow(y2-y1,2.0));
-                        perimeter+=line_size;
-                    }
+                    double line_size=sqrt(pow(x2-x1,2.0)+pow(y2-y1,2.0));
+                    perimeter+=line_size;
+                }
 
-                    if(perimeter<=min_per){
-                        min_per=perimeter;
-                        n=j;
-                    }
+                if(perimeter<=min_per){
+                    min_per=perimeter;
+                    n=candidates[i];
                 }
             }
             break;
@@ -231,24 +240,28 @@ vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
         
         case 'c':
             // menos conflitos
-            n=candidates.front();
+            for(auto const& i : candidates){
+                int min=n_Intersections(i);
+                if(min<min_intr){
+                    min_intr=min;
+                    n = i;
+                }
+            }
             break;
 
         default:// random
-           // int r =rand()%(candidates->size()-1);
-            n=candidates.front();
+            int r =rand()%(candidates.size()-1);
+            n=candidates.at(r);
     }
     return n;
 }
 
-
-vector<Point*> hill_climbing(char opt, vector<vector<Point*>>* candidates){
-    
+vector<Point*> hill_climbing(char opt, vector<vector<Point*>> candidates){
     vector<Point*> neighbour = choose_opt(opt,candidates);
     //if(neighbour pior atual return atual)
     //a=two_exchange(neighbour)
-   // hill_climbing();
-   return neighbour;
+    //hill_climbing(opt, a);
+    //return neighbour;
     
 }
 /* 

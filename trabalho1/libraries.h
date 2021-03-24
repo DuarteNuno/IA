@@ -2,7 +2,7 @@
 #include <vector>
 #include <random>
 #include <algorithm>//reverse vector
-//#include <limits>
-#include <cfloat>
+#include <cfloat> // max double
+#define INT_MAX 2147483646
 
 using namespace std;
