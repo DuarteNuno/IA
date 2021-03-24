@@ -145,54 +145,74 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
     return false;
 }
 
-vector<vector<Point*>>* two_exchange(vector<Point*> p){
+vector<vector<Point*>>* two_exchange(vector<Point*>* p){
     vector<vector<Point*>> *Solution;
 
-    for(int i = 1; i<p.size(); i++){
-        for(int j = 1; j<=p.size(); j++){
-            int a,b;
-            if(j==p.size()){
-                a=0;
-                b=p.size()-1;
-            }
-            else{
-                a=j;
-                b=j-1;
-            }
-            if(b!=(i-1) && b!=i && a!=i && a!=i-1){
+    for(int i = 1; i<p.size()-2; i++){
+        //cout<<"i:"<<i<<endl;
+        for(int j = i+1; j<p.size()-1; j++){
+            //cout<<"j:"<<j<<endl;
+            if(p[i-1]!=p[j+1]){
+
                 //considerar interesefa entre i <-> i-1 e j <-> j-1 
-                if(vectors_Intersect(p[i-1],p[i],p[a],p[b])) {
+                if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {
                     //criar new vector<point>
                     //altera duas 
                     // pushback new
-
+                    cout <<"intersecao entre:\n";
+                    p[i-1]->Point_Print();
+                    cout <<"<->\n";
+                    p[i]->Point_Print();
+                    cout << "e \n";
+                    p[j]->Point_Print();
+                     cout <<"<->\n";
+                    p[j+1]->Point_Print();
+                    
                     //0->i cp
-                    //i swap a
-                    //reverse entre i--a
-                    //b->size-1 cp
-                    vector<Point*> tmp=p;
-                    if(a<i){
-                        reverse(tmp.begin()+a,tmp.begin()+i);
-                        Point *t = tmp[i];
-                        tmp[i]=tmp[a];
-                        tmp[a]=t;
-                    }
-                    else{
-                        reverse(tmp.begin()+i,tmp.begin()+a);
-                        Point *t = tmp[i];
-                        tmp[i]=tmp[a];
-                        tmp[a]=t;
-                    }
-                    for(auto const& i : tmp){
-                        i->Point_Print();
-                    }
+                    //i swap j-1
+                    //reverse entre i--j-1
+                    //j->size-1 cp
+                    
+                    vector<Point*> *tmp=p;
+
+                    reverse(tmp.begin()+i,tmp.begin()+j);
+                    Point *t = tmp[i];
+                    tmp[i]=tmp[j];
+                    tmp[j]=t;
+
                     Solution->push_back(tmp);                    
                 }  
             }
         }
     }
-
     return Solution;
+}
+
+vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
+    switch(opt) {
+        case 'a':
+            // reduzir perimetro
+
+            break;
+        case 'b':
+            // primeiro candidato
+            break;
+        case 'c':
+            // menos conflitos
+            break;
+        default:
+            // random
+    }
+
+}
+
+
+bool hill_climbing(char opt, vector<vector<Point*>>* candidates){
+    
+    vector<Point*> neighbour = choose_opt(opt,candidates);
+    //if(neighbour pior atual close)
+    hill_climbing(opt,neighbour);
+    
 }
 /* 
     //nearest_Neighbour(m);

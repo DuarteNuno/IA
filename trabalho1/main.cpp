@@ -1,8 +1,10 @@
 #include "search.h"
+
 /*
+ *
  *props às ninas @patricia4vieira e @CatarinaSemInsta
  *
-*/
+ */
 
 int main(){
   
@@ -115,13 +117,16 @@ int main(){
     //cout << on_segment(p1,p2,p3);
     cout<<"ola"<<endl;
     nearest_Neighbour(map);
+    
     vector<vector<Point*>>* two_x = two_exchange(map->Path);
-    /*for(int i = 0; i<two_x->size();i++){
-      vector<Point*> *t = two_x[i];
-      for(int j = 0; j<t->size();j++){
-        t[j]->Point_Print();
+    cout<<"g"<<endl;
+    for(int i = 0; i<two_x->size();i++){
+      for(auto const& j :two_x[i]){
+        for(auto const& k :j){
+          k->Point_Print();
+        }
       }
-    }*/
+    }
 
     //print_Path(map);
     cout<<"xau"<<endl;
