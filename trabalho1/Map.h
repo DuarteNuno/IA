@@ -10,12 +10,19 @@ class Point{
         Point *prev;
         Point *next;
 
-        bool l1_visited;
-
         Point(int xcoord, int ycoord);
-        void Point_Print();
+        void Print();
         bool Compare(Point* p);
 };
+
+class Directed_Line{
+    public:
+        Point *inicial;
+        Point *final;
+        bool intersected;
+};
+
+
 
 class Map{
     public:
@@ -24,15 +31,9 @@ class Map{
         vector<Point*> Openlist;
         vector<Point*> Closedlist;//visited Points
         vector<Point*> Path;
-    
-
-        //Point inicial
+        vector<Directed_Line> lines;
 
         Map (int m);
-        void Print_Points();
-        void Print_Vecs();
+        void PrintPoints();
         bool Contains( Point* p);
 };
-
-
-
