@@ -1,7 +1,4 @@
 #include "search.h"
-vector<Point*> best;
-
-
 
 void random_vector(Map *m){
     random_shuffle(m->Points.begin(), m->Points.end());
@@ -130,10 +127,11 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
 
 vector<vector<Point*>>* two_exchange(vector<Point*> p){
     vector<vector<Point*>>* Solution = new vector<vector<Point*>>;
-    for(int i = 1; i<p.size()-2; i++){
+    for(int i = 1; i<p.size()-2; i++){  
         for(int j = i+1; j<p.size()-1; j++){
-            if(p[i-1]!=p[j+1]){
+            if(p.at(i-1)!=p.at(j+1)){
                 if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {
+                    /*
                     cout <<"intersecao entre:\n";
                     p[i-1]->Point_Print();
                     cout <<"<->\n";
@@ -142,9 +140,8 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p){
                     p[j]->Point_Print();
                      cout <<"<->\n";
                     p[j+1]->Point_Print();
-               
+                    */
                     vector<Point*> tmp=p;
-
                     reverse(tmp.begin()+i,tmp.begin()+j);
                     Point *t = tmp[i];
                     tmp[i]=tmp[j];
@@ -187,13 +184,13 @@ double perimeters(vector<Point*> v){
     return s;
 }
 
-double best_per=perimeters(best);
 vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
+    
     vector<Point*> n;
     
     double min_per = DBL_MAX;
     int min_intr = 2147483647;
-    
+
     switch(opt) {
         
         case 'a': //menor perimetro   
@@ -208,6 +205,9 @@ vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
             break;
         
         case 'b': // primeiro candidato
+            if(candidates->empty()){
+                return vector<Point*>();
+            }
             n=candidates->front();
             break;
         
@@ -222,24 +222,38 @@ vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
             break;
 
         default:// random
+            if(candidates->empty()){
+                return vector<Point*>();
+            }
             int r =rand()%(candidates->size()-1);
             n=candidates->at(r);
     }
     return n;
 }
 
-vector<Point*> hill_climbing(char opt, vector<vector<Point*>>* candidates){
-    
-    vector<Point*> neighbour = choose_opt(opt,candidates);
-    double atual_per = perimeters(neighbour);
-    if(best_per<atual_per) return best;
-    
-    else{
-     best=neighbour;
-     best_per=atual_per;
+vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
 
-     vector<vector<Point*>>* next_candidates = two_exchange(neighbour);    
-     return hill_climbing(opt,next_candidates);
+    vector<Point*> best = inicial;
+
+    vector<vector<Point*>>* candidates = two_exchange(best);
+
+    vector<Point*> neighbour = choose_opt(opt, candidates);
+
+    while(!candidates->empty() && !(neighbour.size()<=0)){
+
+        double best_per=perimeters(best);
+        double neighbour_per=perimeters(neighbour);
+
+        if(neighbour_per<best_per){
+
+            best=neighbour;
+            candidates=two_exchange(best);
+            neighbour=choose_opt(opt,candidates);
+        }
+        else{
+            break;
+        }
     }
-    
+
+    return best;
 }

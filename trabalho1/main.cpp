@@ -1,9 +1,11 @@
 #include "search.h"
+
 /*
  *
  *Agradecemos a ajuda das meninas @Patricia Vieira e @Catarina Teixeira
  *
  */
+
 int main(){
   cout << "Qual o tamanho do mapa:"<<endl;
   int mapsize;
@@ -67,7 +69,8 @@ int main(){
     nearest_Neighbour(map);
   }
 
-  vector<vector<Point*>>* two_x = two_exchange(map->Path);
+//  vector<vector<Point*>>* two_x = two_exchange(map->Path);
+
 
   cout << "Aplicar o Hill Climbing a partir do 2-exchange com as opcoes:\n";
   cout << "a) Menor perimetro"<<endl;
@@ -77,5 +80,9 @@ int main(){
   char a;
   cin >> a;
   system("clear");
-  hill_climbing(a,two_x);
+  hill_climbing(a,map->Path);
+
+  for(auto const& i : map->Path){
+        i->Point_Print();
+    }
 }
