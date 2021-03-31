@@ -7,25 +7,28 @@ Point::Point(int xcoord, int ycoord){
     visited=false;
 };
 
-void Point::Print(){
+void Point::Point_Print(){
     cout << "P("<< x<<","<< y <<")" <<endl;
     cout << endl;
-}
-
-Directed_Line::Directed_Line(Point *i, Point *f){
-  inicial=i;
-  final=f;
 }
 
 Map::Map (int m) {
     MaxN = m;
 };
 
-void Map::PrintPoints(){
+void Map::Print_Points(){
     for(auto const& i : Points){
-        i->Print();
+        i->Point_Print();
     }
 }
+
+void Map::Print_Map(){
+    for(auto const& i : Path){
+        cout<<"("<< i->x << "," << i->y << ")";
+    }
+    cout<<endl;
+}
+
 
 bool Map::Contains(Point* p){
       for(auto const& i : this->Points){
