@@ -1,5 +1,20 @@
 #include "search.h"
 
+
+bool accept(actual_p,neighbour_p,temp){
+
+    double dif = actual_p-neighbour_p;
+    double e = -dif/temp;
+
+    if(actual_p>neighbour_p){
+        return true;
+    }
+    else if(e > rand()%2){
+        return true;
+    }
+    return false;
+}
+
 void random_vector(Map *m){
     random_shuffle(m->Points.begin(), m->Points.end());
     vector<Point*> r = m->Points;
@@ -257,18 +272,8 @@ vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
 
         double best_per=perimeters(best);
         double neighbour_per=perimeters(neighbour);
-for(auto const& i : best){
-        cout<<"("<< i->x << "," << i->y << ")";
-    }
-    cout<<endl;
-for(auto const& i : neighbour){
-        cout<<"("<< i->x << "," << i->y << ")";
-    } 
-cout<<best_per<<endl;
-cout<<neighbour_per<<endl;
-cout<<"ola1"<<endl;
+
         if(neighbour_per<best_per){
-             cout<<"ola"<<endl;
             best=neighbour;
             candidates=two_exchange(best);
             neighbour=choose_opt(opt,candidates);
@@ -281,5 +286,27 @@ cout<<"ola1"<<endl;
     return best;
 }
 
+vector<Point*> simulated_annealing(vector<Point*> inicial){   
+    vector<Point*> best = inicial;
 
-// (-23,6)(-11,-1)(-10,-5)(-5,-13)(0,4)(17,-22)(28,-2)(29,29)(19,18)(-14,30)(-23,6)
+    vector<Point*> neighbour = choose_opt('c',two_exchange(inicial));
+
+    int temp = n_Intersections(inicial);
+
+    while((neighbour.size()>0 && temp>0)){
+
+        double best_per=perimeters(best);
+        double neighbour_per=perimeters(neighbour);
+
+        if(accept(best_per,neighbour_per,temp)){
+            best=neighbour;
+            candidates=two_exchange(best);
+            neighbour=choose_opt('c',candidates);
+            temp = n_Intersections(best);
+        }
+        else{
+            temp--;
+        }
+    }
+    return best;
+}
