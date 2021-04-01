@@ -72,7 +72,7 @@ void nearest_Neighbour(Map *m){
 
 }
                    
-double cross_Product(int x1,int y1,int x2,int y2){
+int cross_Product(int x1,int y1,int x2,int y2){
     return (x1*y2)-(x2*y1);    
 }
 
@@ -90,20 +90,20 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
                             //reta P1i->P1f & P1i->P2i
 
                             //p1f-p1i // p2i-p1i
-    double d1 = cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
+    int d1 = cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
                              (p2i->x-p1i->x),(p2i->y-p1i->y));
 
                             //reta P1i->P1f & P1i->P2f
                             //cout pontos!!!!!!
-    double d2 = cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
+    int d2 = cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
                               (p2f->x-p1i->x),(p2f->y-p1i->y));
     
                             //reta P2i->P2f & P2i->P1i
-    double d3 = cross_Product((p2f->x-p2i->x),(p2f->y-p2i->y),
+    int d3 = cross_Product((p2f->x-p2i->x),(p2f->y-p2i->y),
                               (p1i->x-p2i->x),(p1i->y-p2i->y));
 
                             //reta P2i->P2f & P2i->P1f
-    double d4 = cross_Product((p2f->x-p2i->x),(p2f->y-p2i->y),
+    int d4 = cross_Product((p2f->x-p2i->x),(p2f->y-p2i->y),
                               (p1f->x-p2i->x),(p1f->y-p2i->y));
 
     /* cout<<d1<<endl;

@@ -6,7 +6,6 @@ void order(Map *m);
 void print_Path(Map *m);
 void nearest_Neighbour(Map *m);
 
-double cross_Product(int x1,int y1,int x2,int y2);
 
 bool on_segment(Point* p1,Point* p2,Point* p3);
 

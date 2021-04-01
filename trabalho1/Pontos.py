@@ -21,8 +21,6 @@ def myAtoi(string):
 m = int (input("Range: "))
 
 myAtoi(input())
-datax.append(datax[0])
-datay.append(datay[0])
 plt.axis([-m,m,-m,m])
 
 plt.plot(datax, datay)
