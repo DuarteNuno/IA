@@ -79,6 +79,14 @@ int main(){
   char a;
   cin >> a;
   system("clear");
-  map->Path=hill_climbing(a,map->Path);
-  map->Print_Map();
+  //map->Print_Map();
+  vector<Point*> res = hill_climbing(a,map->Path);
+  for(auto const& i : res){
+        cout<<"("<< i->x << "," << i->y << ")";
+    } 
+  /* Point* p1= new Point(3,15);
+  Point* p2= new Point(-1,4);
+  Point* p3= new Point(15,-10);
+  Point* p4= new Point(-20,4);
+  cout << vectors_Intersect(p1,p2,p3,p4); */
 }

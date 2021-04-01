@@ -91,19 +91,26 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
 
                             //p1f-p1i // p2i-p1i
     double d1 = cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
-                  (p2i->x-p1i->x),(p2i->y-p1i->y));
+                             (p2i->x-p1i->x),(p2i->y-p1i->y));
 
                             //reta P1i->P1f & P1i->P2f
+                            //cout pontos!!!!!!
     double d2 = cross_Product((p1f->x-p1i->x),(p1f->y-p1i->y),
                               (p2f->x-p1i->x),(p2f->y-p1i->y));
     
                             //reta P2i->P2f & P2i->P1i
     double d3 = cross_Product((p2f->x-p2i->x),(p2f->y-p2i->y),
-                              (p1i->x-p2i->x),(p1i->x-p2i->y));
+                              (p1i->x-p2i->x),(p1i->y-p2i->y));
 
                             //reta P2i->P2f & P2i->P1f
     double d4 = cross_Product((p2f->x-p2i->x),(p2f->y-p2i->y),
-                              (p1f->x-p2i->x),(p1f->x-p2i->y));
+                              (p1f->x-p2i->x),(p1f->y-p2i->y));
+
+    /* cout<<d1<<endl;
+    cout<<d2<<endl;
+    cout<<d3<<endl;
+    cout<<d4<<endl;
+ */
     
     if(((d1>0 && d2<0) || (d1<0 && d2>0)) &&
     ((d3>0 && d4<0) || (d3<0 && d4>0)))
@@ -129,9 +136,17 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p){
     vector<vector<Point*>>* Solution = new vector<vector<Point*>>;
     for(int i = 1; i<p.size()-2; i++){  
         for(int j = i+1; j<p.size()-1; j++){
+            /*  p[i-1]->Point_Print();
+             p[i]->Point_Print();
+             p[j]->Point_Print();
+             p[j+1]->Point_Print();
+             cout << endl;
+ */
             if(p.at(i-1)!=p.at(j+1)){
+               /*  cout<<"hello"<< endl;
+                cout << vectors_Intersect(p[i-1],p[i],p[j],p[j+1])<<endl; */
                 if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {
-                    /*
+                   /*  
                     cout <<"intersecao entre:\n";
                     p[i-1]->Point_Print();
                     cout <<"<->\n";
@@ -140,9 +155,9 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p){
                     p[j]->Point_Print();
                      cout <<"<->\n";
                     p[j+1]->Point_Print();
-                    */
+                     */
                     vector<Point*> tmp=p;
-                    reverse(tmp.begin()+i,tmp.begin()+j);
+                    reverse(tmp.begin()+i+1,tmp.begin()+j);
                     Point *t = tmp[i];
                     tmp[i]=tmp[j];
                     tmp[j]=t;
@@ -224,7 +239,7 @@ vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
             if(candidates->empty()){
                 return vector<Point*>();
             }
-            int r =rand()%(candidates->size()-1);
+            int r =rand()%(candidates->size());
             n=candidates->at(r);
     }
     return n;
@@ -238,12 +253,22 @@ vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
 
     vector<Point*> neighbour = choose_opt(opt, candidates);
 
-    while(!candidates->empty() && !(neighbour.size()<=0)){
+    while((neighbour.size()>0)){
 
         double best_per=perimeters(best);
         double neighbour_per=perimeters(neighbour);
-        
+for(auto const& i : best){
+        cout<<"("<< i->x << "," << i->y << ")";
+    }
+    cout<<endl;
+for(auto const& i : neighbour){
+        cout<<"("<< i->x << "," << i->y << ")";
+    } 
+cout<<best_per<<endl;
+cout<<neighbour_per<<endl;
+cout<<"ola1"<<endl;
         if(neighbour_per<best_per){
+             cout<<"ola"<<endl;
             best=neighbour;
             candidates=two_exchange(best);
             neighbour=choose_opt(opt,candidates);
@@ -252,5 +277,9 @@ vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
             break;
         }
     }
+        
     return best;
 }
+
+
+// (-23,6)(-11,-1)(-10,-5)(-5,-13)(0,4)(17,-22)(28,-2)(29,29)(19,18)(-14,30)(-23,6)
