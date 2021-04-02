@@ -1,7 +1,7 @@
 #include "search.h"
 
 
-bool accept(actual_p,neighbour_p,temp){
+bool accept(int actual_p,int neighbour_p,int temp){
 
     double dif = actual_p-neighbour_p;
     double e = -dif/temp;
@@ -290,6 +290,7 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
     vector<Point*> best = inicial;
 
     vector<Point*> neighbour = choose_opt('c',two_exchange(inicial));
+    vector<vector<Point*>>* candidates = two_exchange(best);
 
     int temp = n_Intersections(inicial);
 

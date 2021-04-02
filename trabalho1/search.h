@@ -18,3 +18,5 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p);
 vector<Point*> hill_climbing(char opt, vector<Point*> candidates);
 
 double perimeters(vector<Point*> v);
+
+vector<Point*> simulated_annealing(vector<Point*> inicial);

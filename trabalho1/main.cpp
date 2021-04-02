@@ -57,33 +57,43 @@ int main(){
     }
   }
 
-  cout << "Aplicar uma permutacao (1)\n ou nearest-neigbour (2)\n";
+  cout << "Aplicar uma permutacao (1)\nNearest-neigbour (2)\n";
   cin >> inpt;
 
   system("clear");
   
-  if(inpt==1){
-    random_vector(map);
-  }
-  else{
-    nearest_Neighbour(map);
-  }
+  if(inpt==1) random_vector(map);
+  else nearest_Neighbour(map);
+  
 
 //  vector<vector<Point*>>* two_x = two_exchange(map->Path);
+  char searcher;
+  cout << "Selicionar Método de pesquisa:"<<endl;
+  cout << "Hill_Climbing (1)\n";
+  cout << "Simulated Annealing (2)\n";
+  cin >> searcher;
 
-  cout << "Aplicar o Hill Climbing a partir do 2-exchange com as opcoes:\n";
-  cout << "a) Menor perimetro"<<endl;
-  cout << "b) Primeiro candidato"<<endl;
-  cout << "c) Menos conflitos"<<endl;
-  cout << "d) candidato aleatorio"<<endl;
-  char a;
-  cin >> a;
-  system("clear");
-  //map->Print_Map();
-  vector<Point*> res = hill_climbing(a,map->Path);
-  for(auto const& i : res){
-        cout<<"("<< i->x << "," << i->y << ")";
-    } 
+  if(searcher=='1'){
+    cout << "Aplicar o Hill Climbing a partir do 2-exchange com as opcoes:\n";
+    cout << "a) Menor perimetro"<<endl;
+    cout << "b) Primeiro candidato"<<endl;
+    cout << "c) Menos conflitos"<<endl;
+    cout << "d) candidato aleatorio"<<endl;
+    char a;
+    cin >> a;
+    system("clear");
+    //map->Print_Map();
+    vector<Point*> res = hill_climbing(a,map->Path);
+    for(auto const& i : res){
+          cout<<"("<< i->x << "," << i->y << ")";
+      } 
+  }
+  else{
+     vector<Point*> res = simulated_annealing(map->Path);
+    for(auto const& i : res){
+          cout<<"("<< i->x << "," << i->y << ")";
+      } 
+  }
   /* Point* p1= new Point(3,15);
   Point* p2= new Point(-1,4);
   Point* p3= new Point(15,-10);
