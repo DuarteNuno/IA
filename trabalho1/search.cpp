@@ -88,9 +88,9 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
     vector<vector<Point*>>* candidates = two_exchange(best);
 
     double temp =  (double) n_Intersections(inicial);
-    int counter = 0;
+    
 
-    while(temp>0 && candidates->size() > 0){
+    while(temp>0.00000000000000001 && candidates->size() > 0){
        /*  cout << temp << endl;
         cout << neighbour.size() << endl;
         cout << candidates->size() <<"\n\n";
@@ -107,8 +107,8 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
         
         temp*=0.95;
 
-        if(counter > 10000) return best;
-        counter ++;
+       
+        
     }
     return best;
 }
