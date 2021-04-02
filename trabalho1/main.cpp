@@ -49,10 +49,15 @@ int main(){
   }
   else{
     for(int i=0; i<number_points; ++i){
+      cout << "x e y do ponto" << i+1 << endl;
+      if(i>0) cout << "nota: nao inserir pontos já existentes\n";
       int x1,y1; // 00 11 01 10
       cin >> x1>> y1;
       Point* p1 = new Point(x1,y1);
-      map->Points.insert(map->Points.begin(),p1);
+       if(map->Contains(p1)){
+        i--;
+      }
+      else map->Points.insert(map->Points.begin(),p1);
       system("clear");
     }
   }
@@ -64,6 +69,12 @@ int main(){
   
   if(inpt==1) random_vector(map);
   else nearest_Neighbour(map);
+  
+  cout << "Caminho obtido atraves do metodo selcionado:\n";
+   for(auto const& i : map->Path){
+          cout<<"("<< i->x << "," << i->y << ")";
+      }
+      cout << "\n\n";
   
 
 //  vector<vector<Point*>>* two_x = two_exchange(map->Path);
@@ -86,13 +97,15 @@ int main(){
     vector<Point*> res = hill_climbing(a,map->Path);
     for(auto const& i : res){
           cout<<"("<< i->x << "," << i->y << ")";
-      } 
+      }
+      cout << endl; 
   }
   else{
      vector<Point*> res = simulated_annealing(map->Path);
     for(auto const& i : res){
           cout<<"("<< i->x << "," << i->y << ")";
       } 
+      cout << endl; 
   }
   /* Point* p1= new Point(3,15);
   Point* p2= new Point(-1,4);
