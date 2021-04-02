@@ -2,7 +2,7 @@
 
 /*
  *
- *Agradecemos a ajuda das meninas @Patricia Vieira e @Catarina Teixeira
+ *Agradecemos a ajuda das colegas @Patricia Vieira e @Catarina Teixeira
  *--------------------------------up201805238--------up201805042-------
  */
 
@@ -69,7 +69,8 @@ int main(){
   
   if(inpt==1) random_vector(map);
   else nearest_Neighbour(map);
-  
+  /* map->Path=map->Points;
+  map->Path.push_back(map->Path.at(0)); */
   cout << "Caminho obtido atraves do metodo selcionado:\n";
    for(auto const& i : map->Path){
           cout<<"("<< i->x << "," << i->y << ")";

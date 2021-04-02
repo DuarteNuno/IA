@@ -87,9 +87,12 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
     vector<Point*> neighbour = choose_opt('c',two_exchange(inicial));
     vector<vector<Point*>>* candidates = two_exchange(best);
 
-    int temp = n_Intersections(inicial);
+    double temp =  (double) n_Intersections(inicial);
 
-    while((neighbour.size()>0 && temp>0)){
+    while(temp>0.1){
+        cout << temp << endl;
+        cout << neighbour.size() << endl;
+        cout << candidates->size() <<"\n\n";
 
         double best_per=perimeters(best);
         double neighbour_per=perimeters(neighbour);
@@ -98,10 +101,10 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
             best=neighbour;
             candidates=two_exchange(best);
             neighbour=choose_opt('c',candidates);
-            temp = n_Intersections(best);
+
         }
         else{
-            temp--;
+            temp*=0.95;
         }
     }
     return best;
