@@ -1,5 +1,7 @@
 #include "search.h"
 
+double pheromones[MAX][MAX]={0};
+
 void nearest_Neighbour(Map *m){
 
     int r =rand()%(m->Points.size()-1);
@@ -72,6 +74,9 @@ vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
             best=neighbour;
             candidates=two_exchange(best);
             neighbour=choose_opt(opt,candidates);
+            if(opt=='c'){
+                if(n_Intersections(best)<n_Intersections(neighbour)) return best; // retornar maximo local
+            }
         }
         else{
             break;
@@ -90,7 +95,7 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
     double temp =  (double) n_Intersections(inicial);
     
 
-    while(temp>0.00000000000000001 && candidates->size() > 0){
+    while(temp>0 && candidates->size() > 0){
        /*  cout << temp << endl;
         cout << neighbour.size() << endl;
         cout << candidates->size() <<"\n\n";
@@ -101,7 +106,7 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
         if(accept(best_per,neighbour_per,temp)){
             best=neighbour;
             candidates=two_exchange(best);
-            neighbour=choose_opt('d',candidates);
+            neighbour=choose_opt('c',candidates);
 
         }
         
@@ -111,4 +116,68 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
         
     }
     return best;
+}
+
+vector<Point*> ant_colony(vector<Point*> Points){
+    vector<Point*> solution;
+    vector<Point*> ant_path;
+
+
+
+    double best_per=DBL_MAX;
+    double actual_per=0; 
+    int size= Points.size();   
+    
+    
+    int n_iterations=1000;
+    int n_ants=30;
+
+    double ALPHA=0.5;
+    double BETA =0.5;
+    
+    double mult=0.0625;
+
+    for(int n = 0; n<n_iterations; n++){//iteracao
+        for(int k = 0; k<n_ants; k++)   {//fumiga
+            for(auto const& i : Points){
+                i->visited=false;
+            } 
+            
+            int p_inicial=k%size;
+            Point* actual=Points[p_inicial];
+            ant_path.push_back(actual);
+            actual->visited=true;
+            Point* nextPoint=ant_choose_point(actual,&Points,ALPHA,BETA);
+            while(!nextPoint->visited){
+                //nextPoint->Point_Print();
+                actual=nextPoint;
+                actual->visited=true;
+                ant_path.push_back(actual);
+                nextPoint=ant_choose_point(actual,&Points,ALPHA,BETA);
+            }
+            Point* final=Points[p_inicial];
+            ant_path.push_back(final);
+            //cout<<endl;
+            actual_per=perimeters(ant_path);
+            if(actual_per<best_per){
+                best_per=actual_per;
+                solution=ant_path;
+                ALPHA=ALPHA+mult/n;
+                BETA=BETA-mult/n;
+                //melhorar influencia da feromona
+            }
+            else{
+                BETA=BETA+mult/n;
+                ALPHA=ALPHA-mult/n;
+                //melhorar ifluencia da distancia 
+            }
+            ant_path.clear();
+        }
+        for(int a=0;a<MAX;a++){
+            for(int b=0;b<MAX;b++){
+                pheromones[a][b]=pheromones[a][b]*0.8;
+            }
+        }
+    }
+    return solution;
 }

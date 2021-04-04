@@ -83,6 +83,7 @@ int main(){
   cout << "Selicionar Método de pesquisa:"<<endl;
   cout << "Hill_Climbing (1)\n";
   cout << "Simulated Annealing (2)\n";
+  cout << "Ant Colony (3) \n";
   cin >> searcher;
 
   if(searcher=='1'){
@@ -101,16 +102,19 @@ int main(){
       }
       cout << endl; 
   }
-  else{
-     vector<Point*> res = simulated_annealing(map->Path);
+  else if(searcher=='2'){
+    vector<Point*> res = simulated_annealing(map->Path);
     for(auto const& i : res){
-          cout<<"("<< i->x << "," << i->y << ")";
-      } 
-      cout << endl; 
+      cout<<"("<< i->x << "," << i->y << ")";
+    } 
+     cout << endl; 
   }
-  /* Point* p1= new Point(3,15);
-  Point* p2= new Point(-1,4);
-  Point* p3= new Point(15,-10);
-  Point* p4= new Point(-20,4);
-  cout << vectors_Intersect(p1,p2,p3,p4); */
+  else{
+    vector<Point*> res = ant_colony(map->Points);
+    cout<<"oi"<<endl;
+    for(auto const& i : res){
+      cout<<"("<< i->x << "," << i->y << ")";
+    } 
+     cout << endl;
+  }
 }

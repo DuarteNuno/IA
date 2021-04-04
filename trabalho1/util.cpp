@@ -1,6 +1,5 @@
 #include "util.h"
 
-
 bool accept(int actual_p,int neighbour_p,int temp){
 
     double dif = neighbour_p-actual_p;
@@ -206,4 +205,90 @@ vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
             n=candidates->at(r);
     }
     return n;
+}
+
+double distance(Point *a, Point *b){
+    int xa=a->x;
+    int ya=a->y;
+    int xb=b->x;
+    int yb=b->y;
+
+    double line_size=sqrt(pow(xb-xa,2.0)+pow(yb-ya,2.0));
+    return line_size;
+}
+
+Point* ant_choose_point(Point* actual, vector<Point*> *points,double alpha,double beta){
+    Point* res;
+    
+    double phm_actual=0;
+    double inv_dist=0;
+    double sum=0;
+
+    double ALPHA=alpha;
+    double BETA =beta;
+    
+    int index=0;
+    int actual_index=0;
+    
+    for(auto const& i : *points){
+        if(actual==i){
+            actual_index=index;
+        }
+        index++;
+    }
+
+    index=0;
+    
+    for(auto const& j : *points){
+        if(actual==j){
+            continue;
+        }
+        else if(j->visited){
+            continue;
+        }
+        else{
+            inv_dist = 1/distance(actual,j);
+            phm_actual = pheromones[actual_index][index]; 
+            sum+=(phm_actual*ALPHA) + (inv_dist*BETA);
+        }
+        index++;
+    }
+
+    double x = ((double) rand() / (double) (RAND_MAX));
+    double p=0;
+    double f=0;
+    phm_actual=0;
+    inv_dist=0;
+
+    index=0;
+
+    for(auto const& k : *points){
+        if(actual==k){
+            continue;
+        }
+        else if(k->visited){
+            continue;
+        }
+        else{
+            inv_dist = 1/distance(actual,k);
+            phm_actual = pheromones[actual_index][index]; 
+            f+=phm_actual*ALPHA + inv_dist*BETA;
+            p+=(phm_actual*ALPHA + inv_dist*BETA)/sum;
+
+            if(x>p){
+                continue;
+            }
+            else{
+                pheromones[actual_index][index]=pheromones[actual_index][index]*0.8+ 0.8;
+                pheromones[index][actual_index]=pheromones[index][actual_index]*0.8+ 0.8;
+                res=k;
+                sum=0;
+                return res;
+            }
+        }
+        res=k;
+        index++;
+    }
+    sum=0;
+    return res;
 }

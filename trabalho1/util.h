@@ -21,3 +21,6 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p);
 
 double perimeters(vector<Point*> v);
 
+Point* ant_choose_point(Point* actual, vector<Point*> *points,double alpha,double beta);
+
+double distance(Point *a, Point *b);
