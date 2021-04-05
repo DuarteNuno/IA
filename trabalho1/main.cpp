@@ -1,9 +1,12 @@
 #include "search.h"
 
 /*
+ *Autores: @Duarte Alves e @Manuel Sá
+ *---------up201805437----up201805273--
  *
- *Agradecemos a ajuda das colegas @Patricia Vieira e @Catarina Teixeira
- *--------------------------------up201805238--------up201805042-------
+ * 
+ *Agradecemos a colaboraçao das colegas @Patricia Vieira e @Catarina Teixeira
+ *----------------------------------------up201805238--------up201805042-------
  */
 
 int main(){
@@ -109,7 +112,7 @@ int main(){
   }
   else{
     vector<Point*> res = ant_colony(map->Points);
-    cout<<"oi"<<endl;
+   
     for(auto const& i : res){
       cout<<"("<< i->x << "," << i->y << ")";
     } 

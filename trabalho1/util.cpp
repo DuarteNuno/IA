@@ -94,13 +94,11 @@ vector<vector<Point*>>* two_exchange(vector<Point*> p){
                     Point *t = tmp[i];
                     tmp[i]=tmp[j];
                     tmp[j]=t;
-                    Solution->push_back(tmp); 
-                    cout<<"filho per: "<<perimeters(tmp)<<endl;                   
+                    Solution->push_back(tmp);                   
                 }  
             }
         }
     }
-    cout <<endl;
     return Solution;
 }
 

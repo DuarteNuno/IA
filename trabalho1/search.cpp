@@ -60,7 +60,6 @@ void nearest_Neighbour(Map *m){
 vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
 
     vector<Point*> best = inicial;
-    cout<<"per pai: "<<perimeters(best)<<endl;
     vector<vector<Point*>>* candidates = two_exchange(best);
 
     vector<Point*> neighbour = choose_opt(opt, candidates,best);
