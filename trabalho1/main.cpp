@@ -69,8 +69,6 @@ int main(){
   
   if(inpt==1) random_vector(map);
   else nearest_Neighbour(map);
-  /* map->Path=map->Points;
-  map->Path.push_back(map->Path.at(0)); */
   cout << "Caminho obtido atraves do metodo selcionado:\n";
    for(auto const& i : map->Path){
           cout<<"("<< i->x << "," << i->y << ")";
@@ -78,12 +76,13 @@ int main(){
       cout << "\n\n";
   
 
-//  vector<vector<Point*>>* two_x = two_exchange(map->Path);
   char searcher;
   cout << "Selicionar Método de pesquisa:"<<endl;
   cout << "Hill_Climbing (1)\n";
   cout << "Simulated Annealing (2)\n";
-  cout << "Ant Colony (3) \n";
+  if(number_points<200){
+    cout << "Ant Colony (3) \n";
+  }
   cin >> searcher;
 
   if(searcher=='1'){
@@ -95,7 +94,6 @@ int main(){
     char a;
     cin >> a;
     system("clear");
-    //map->Print_Map();
     vector<Point*> res = hill_climbing(a,map->Path);
     for(auto const& i : res){
           cout<<"("<< i->x << "," << i->y << ")";

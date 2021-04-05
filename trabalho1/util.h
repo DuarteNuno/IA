@@ -9,7 +9,7 @@ bool accept(int actual_p,int neighbour_p,int temp);
 
 int n_Intersections(vector<Point*> p);
 
-vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates);
+vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates,vector<Point*> best);
 
 bool on_segment(Point* p1,Point* p2,Point* p3);
 

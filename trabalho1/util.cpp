@@ -5,12 +5,8 @@ bool accept(int actual_p,int neighbour_p,int temp){
     double dif = neighbour_p-actual_p;
     double e = -dif/temp;
     double x = ((double) rand() / (double) (RAND_MAX));
-
- /*    cout << "e = " << e << endl;
-    cout << "x = " << x << endl; */
     
      if(actual_p>neighbour_p){
-       // cout << "hallo2" << endl;
         return true;
     }
     
@@ -67,12 +63,6 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
                             //reta P2i->P2f & P2i->P1f
     int d4 = cross_Product((p2f->x-p2i->x),(p2f->y-p2i->y),
                               (p1f->x-p2i->x),(p1f->y-p2i->y));
-
-    /* cout<<d1<<endl;
-    cout<<d2<<endl;
-    cout<<d3<<endl;
-    cout<<d4<<endl;
- */
     
     if(((d1>0 && d2<0) || (d1<0 && d2>0)) &&
     ((d3>0 && d4<0) || (d3<0 && d4>0)))
@@ -90,45 +80,27 @@ bool vectors_Intersect(Point* p1i, Point* p1f, Point* p2i, Point* p2f){
     else if((d4==0) && 
         (on_segment(p2i,p2f,p1f)))
         return true;
-
     return false;
 }
 
 vector<vector<Point*>>* two_exchange(vector<Point*> p){
     vector<vector<Point*>>* Solution = new vector<vector<Point*>>;
-    for(int i = 1; i<p.size()-2; i++){  
-        for(int j = i+1; j<p.size()-1; j++){
-            /*  p[i-1]->Point_Print();
-             p[i]->Point_Print();
-             p[j]->Point_Print();
-             p[j+1]->Point_Print();
-             cout << endl;
- */
+    for(int i = 1; i<p.size()-2; i++){  //i-1 ->i
+        for(int j = i+1; j<p.size()-1; j++){ //j->j+1
             if(p.at(i-1)!=p.at(j+1)){
-               /*  cout<<"hello"<< endl;
-                cout << vectors_Intersect(p[i-1],p[i],p[j],p[j+1])<<endl; */
-                if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {
-                   /*  
-                    cout <<"intersecao entre:\n";
-                    p[i-1]->Point_Print();
-                    cout <<"<->\n";
-                    p[i]->Point_Print();
-                    cout << "e \n";
-                    p[j]->Point_Print();
-                     cout <<"<->\n";
-                    p[j+1]->Point_Print();
-                     */
+                if(vectors_Intersect(p[i-1],p[i],p[j],p[j+1])) {                 
                     vector<Point*> tmp=p;
                     reverse(tmp.begin()+i+1,tmp.begin()+j);
                     Point *t = tmp[i];
                     tmp[i]=tmp[j];
                     tmp[j]=t;
-
-                    Solution->push_back(tmp);                    
+                    Solution->push_back(tmp); 
+                    cout<<"filho per: "<<perimeters(tmp)<<endl;                   
                 }  
             }
         }
     }
+    cout <<endl;
     return Solution;
 }
 
@@ -157,37 +129,33 @@ double perimeters(vector<Point*> v){
         double line_size=sqrt(pow(x2-x1,2.0)+pow(y2-y1,2.0));
         s+=line_size;
     }
-
     return s;
 }
 
-vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
-    
+vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates,vector<Point*> best){
     vector<Point*> n;
-    
     double min_per = DBL_MAX;
     int min_intr = INT_MAX;
-
     switch(opt) {
-        case 'a': //menor perimetro   
+        case 'a'://  
             for(int i=0;i<candidates->size();i++){                   
                 double perimeter=perimeters(candidates->at(i));
-               
                 if(perimeter<=min_per){
                     min_per=perimeter;
                     n=candidates->at(i);
                 }
             }
             break;
-        
         case 'b': // primeiro candidato
             if(candidates->empty()){
                 return vector<Point*>();
             }
             n=candidates->front();
             break;
-        
         case 'c':// menos conflitos
+            if(candidates->empty()){
+                return vector<Point*>();
+            }
             for(int i=0;i<candidates->size();i++){
                 int min=n_Intersections(candidates->at(i));
                 if(min<min_intr){
@@ -195,8 +163,10 @@ vector<Point*> choose_opt(char opt, vector<vector<Point*>>* candidates){
                     n = candidates->at(i);
                 }
             }
+            if(n_Intersections(n)>n_Intersections(best)){
+                n=best;
+            }
             break;
-
         default:// random
             if(candidates->empty()){
                 return vector<Point*>();
