@@ -54,7 +54,7 @@ void nearest_Neighbour(Map *m){
 
     }
     m->Path.push_back(inicial_Point);
-
+    cout << "n de iteracoes nn: " << m->Points.size() << endl;
 }
 
 vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
@@ -63,9 +63,10 @@ vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
     vector<vector<Point*>>* candidates = two_exchange(best);
 
     vector<Point*> neighbour = choose_opt(opt, candidates,best);
-
+    int iteracoes=1;
     while((neighbour.size()>0)){
 
+        iteracoes++;
         double best_per=perimeters(best);
         double neighbour_per=perimeters(neighbour);
 
@@ -77,8 +78,9 @@ vector<Point*> hill_climbing(char opt, vector<Point*> inicial ){
         else{
             break;
         }
+
     }
-        
+     cout << "n de iteracoes hc: " << iteracoes << endl; 
     return best;
 }
 
@@ -89,8 +91,9 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
     vector<vector<Point*>>* candidates = two_exchange(best);
 
     double temp =  (double) n_Intersections(inicial); 
-
-    while(temp>0 && candidates->size() > 0){
+    int iteracoes=1;
+    while(temp>DBL_MIN && candidates->size() > 0){
+        iteracoes++;
         double best_per=perimeters(best);
         double neighbour_per=perimeters(neighbour);
 
@@ -101,6 +104,7 @@ vector<Point*> simulated_annealing(vector<Point*> inicial){
         }   
         temp*=0.95;     
     }
+    cout << "n de iteracoes sa: " << iteracoes << endl; 
     return best;
 }
 
@@ -174,5 +178,6 @@ vector<Point*> ant_colony(vector<Point*> Points){
             }
         }
     }
+    cout << "n de iteracoes ac: " << n_ants*n_iterations*size << endl;
     return solution;
 }

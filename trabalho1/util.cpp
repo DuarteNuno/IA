@@ -229,7 +229,6 @@ Point* ant_choose_point(Point* actual, vector<Point*> *points,double alpha,doubl
     inv_dist=0;
 
     index=0;
-
     for(auto const& k : *points){
         if(actual==k){
             continue;
@@ -239,16 +238,25 @@ Point* ant_choose_point(Point* actual, vector<Point*> *points,double alpha,doubl
         }
         else{
             inv_dist = 1/distance(actual,k);
-            phm_actual = pheromones[actual_index][index]; 
+            phm_actual = pheromones[actual_index][index];
+            
+
+
             f+=phm_actual*ALPHA + inv_dist*BETA;
             p+=(phm_actual*ALPHA + inv_dist*BETA)/sum;
-
-            if(x>p){
+            if(p>=0.999 && p<1.1){
+                pheromones[actual_index][index]=pheromones[actual_index][index]+ 0.8;
+                pheromones[index][actual_index]=pheromones[index][actual_index]+ 0.8;
+                res=k;
+                sum=0;
+                return res;
+            }
+            else if(x>p){
                 continue;
             }
             else{
-                pheromones[actual_index][index]=pheromones[actual_index][index]*0.8+ 0.8;
-                pheromones[index][actual_index]=pheromones[index][actual_index]*0.8+ 0.8;
+                pheromones[actual_index][index]=pheromones[actual_index][index]+ 0.8;
+                pheromones[index][actual_index]=pheromones[index][actual_index]+ 0.8;
                 res=k;
                 sum=0;
                 return res;
